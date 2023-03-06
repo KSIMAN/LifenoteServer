@@ -3,22 +3,24 @@
 DatabaseConnector::DatabaseConnector()
 {
     OpenDatabase("lifenote.db");
+}
 
+DatabaseConnector::~DatabaseConnector()
+{
+    db.close();
 }
 
 void DatabaseConnector::OpenDatabase(QString db_path)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(db_path);
     if(!db.open())
     {
         qDebug() << "PROBLEM OF OPENING";
     }
-
-
 }
 
-void DatabaseConnector::InsertNewUser(QString username, QString password)
+bool DatabaseConnector::InsertNewUser(QString username, QString password)
 {
     QString storage_path = "data/" + username;
    QSqlQuery query;
@@ -32,8 +34,7 @@ void DatabaseConnector::InsertNewUser(QString username, QString password)
    query.addBindValue(username);
    query.addBindValue(password);
    query.addBindValue(storage_path);
-   if(!query.exec())
-       qDebug() << "error of add user";
+   return query.exec();
 }
 
 bool DatabaseConnector::TryToLogin(QString username, QString password)

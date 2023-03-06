@@ -10,8 +10,9 @@ class DatabaseConnector : public QObject
     Q_OBJECT
 public:
     DatabaseConnector();
+    ~DatabaseConnector();
     void OpenDatabase(QString db_path);
-    void InsertNewUser(QString username, QString password);
+    bool InsertNewUser(QString username, QString password);
     bool TryToLogin(QString username, QString password);
     void LoadUserInfo();
 private:
